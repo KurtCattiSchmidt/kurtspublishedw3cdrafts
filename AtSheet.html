@@ -8,7 +8,7 @@
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-cascade-7/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="66989d9380842d5717efc08034fa605736f98bb0" name="revision">
+  <meta content="2e23a8f2ee426ecef977a745662280507cc9fba8" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1114,13 +1114,12 @@ on screen, on paper, etc.
      <a href="#stylesheet-section"><span class="secno">2</span> <span class="content"> Stylesheet</span></a>
      <ol class="toc">
       <li><a href="#at-ruledef-sheet"><span class="secno">2.1</span> <span class="content"> Named Stylesheets: the `@sheet` block at-rule</span></a>
-      <li><a href="#sheet-declaration"><span class="secno">2.2</span> <span class="content"> Declaring Named Stylesheets</span></a>
-      <li><a href="#at-ruledef-import-from"><span class="secno">2.3</span> <span class="content"> Importing Specific Named Stylesheets: the <span class="css">from</span> Keyword</span></a>
+      <li><a href="#at-ruledef-import-from"><span class="secno">2.2</span> <span class="content"> Importing Specific Named Stylesheets: the <span class="css">from</span> Keyword</span></a>
      </ol>
     <li>
      <a href="#sheet-apis"><span class="secno">3</span> <span class="content">Sheet APIs</span></a>
      <ol class="toc">
-      <li><a href="#the-csssheetblockrule-interface"><span class="secno">3.1</span> <span class="content"> The <code>CSSSheetBlockRule</code> interface</span></a>
+      <li><a href="#the-CSSSheetRule-interface"><span class="secno">3.1</span> <span class="content"> The <code>CSSSheetRule</code> interface</span></a>
       <li><a href="#the-sheetnamelist-interface"><span class="secno">3.2</span> <span class="content">The <code>SheetNameList</code> Interface</span></a>
       <li><a href="#cssimportrule-extensions"><span class="secno">3.3</span> <span class="content"> Extensions to the <code>CSSImportRule</code> interface</span></a>
      </ol>
@@ -1177,18 +1176,20 @@ on screen, on paper, etc.
     <li>An instance of file with the <a href="https://www.w3.org/TR/css-cascade-5/#content-type">CSS Style Sheet Content-Type</a>, embedded within a document. 
     <li>A collection of CSS rules within a document. 
     <li><a href="https://www.w3.org/TR/cssom/#the-stylesheet-interface">CSSOM Stylesheet</a> objects. 
-    <li>Any of the above may be subdivided into <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="named-stylesheet">named stylesheet</dfn> with the <span class="css">@sheet</span> rule. 
+    <li>Any of the above may be subdivided into a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="named-stylesheet">named stylesheet</dfn> with the <span class="css">@sheet</span> rule. 
    </ol>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="sheet-name">sheet-name</dfn> is a string identifying
-	 inner named sheets within a stylesheet.</p>
-   <p>Syntactically, a stylesheet must include an explicit <a data-link-type="dfn" href="#sheet-name" id="ref-for-sheet-name">sheet-name</a>, and is represented
+	 inner <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet">named stylesheet</a>s within a stylesheet.</p>
+   <p>Syntactically, a <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet①">named stylesheet</a> must include an explicit <a data-link-type="dfn" href="#sheet-name" id="ref-for-sheet-name">sheet-name</a>, and is represented
 	by the <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name">&lt;sheet-name></a> in <span class="css">@sheet</span> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-5/#at-ruledef-import" id="ref-for-at-ruledef-import">@import</a> rules,
 	which is a single <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#typedef-ident" id="ref-for-typedef-ident">&lt;ident></a> token:</p>
 <pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-sheet-name"><a class="production" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name①">&lt;sheet-name></a></dfn> = <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#typedef-ident" id="ref-for-typedef-ident①">&lt;ident></a>
 </pre>
    <h3 class="heading settled" data-level="2.1" id="at-ruledef-sheet"><span class="secno">2.1. </span><span class="content"> Named Stylesheets: the `@sheet` block at-rule</span><a class="self-link" href="#at-ruledef-sheet"></a></h3>
-   <p>The <span class="css">@sheet</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rule</a> assigns its style rules to a particular named <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet">stylesheet</a>.
-	This sheet-assignment syntax is:</p>
+    A <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet②">named stylesheet</a> may be declared by using
+	an <a href="#at-ruledef-sheet">@sheet block at-rule</a>,
+	assigning its child style rules into that sheet. 
+   <p>This sheet-assignment syntax is:</p>
 <pre class="prod">@sheet <a class="production" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name②">&lt;sheet-name></a> {
   <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-rule-list" id="ref-for-typedef-rule-list">&lt;rule-list></a>
 }
@@ -1196,9 +1197,9 @@ on screen, on paper, etc.
    <p>Such <span class="css">@sheet</span> block rules have the same restrictions and processing
 	as a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rule" id="ref-for-conditional-group-rule">conditional group rule</a> <a data-link-type="biblio" href="#biblio-css-conditional-3" title="CSS Conditional Rules Module Level 3">[CSS-CONDITIONAL-3]</a> with a false condition.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This means that rules within an <span class="css">@sheet</span> block are not applied
-until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet">named stylesheet</a> is explicitly embedded into a document.</p>
-   <div class="example" id="example-c2a5fee1">
-    <a class="self-link" href="#example-c2a5fee1"></a> 
+until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet③">named stylesheet</a> is explicitly imported into another context.</p>
+   <div class="example" id="example-560a110a">
+    <a class="self-link" href="#example-560a110a"></a> 
 <pre class="lang-css highlight">&lt;style>
 <c- n>@sheet</c-> framework <c- p>{</c->
   h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> maroon<c- p>;</c-> <c- p>}</c->
@@ -1206,14 +1207,10 @@ until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-s
 &lt;/style>
 &lt;h1>Sample text&lt;/h1>
 </pre>
-    <p>In this example, the <span class="css">h1</span> tag does not have the maroon color applied, as the <span class="css">@sheet</span> named "framework" was not explicitly embedded into the document.</p>
+    <p>In this example, the <span class="css">h1</span> tag does not have the maroon color applied, as the <span class="css">@sheet</span> named "framework" was not explicitly imported into another context.</p>
    </div>
-   <p><span class="css">@sheet</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule①">block at-rules</a> may not be nested within any other CSS rules.</p>
-   <h3 class="heading settled" data-level="2.2" id="sheet-declaration"><span class="secno">2.2. </span><span class="content"> Declaring Named Stylesheets</span><a class="self-link" href="#sheet-declaration"></a></h3>
-   <p>A <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet①">named stylesheet</a> may be declared by using
-	an <a href="#at-ruledef-sheet">@sheet block at-rule</a>,
-	assigning its child style rules into that sheet.</p>
-   <h3 class="heading settled" data-level="2.3" id="at-ruledef-import-from"><span class="secno">2.3. </span><span class="content"> Importing Specific Named Stylesheets: the <span class="css">from</span> Keyword</span><a class="self-link" href="#at-ruledef-import-from"></a></h3>
+   <p><span class="css">@sheet</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rules</a> may not be nested within any other CSS rules.</p>
+   <h3 class="heading settled" data-level="2.2" id="at-ruledef-import-from"><span class="secno">2.2. </span><span class="content"> Importing Specific Named Stylesheets: the <span class="css">from</span> Keyword</span><a class="self-link" href="#at-ruledef-import-from"></a></h3>
 <pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-url-string">&lt;url-string></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#url-value" id="ref-for-url-value">&lt;url></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one" id="ref-for-comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a> ]
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-sheet-name-list">&lt;sheet-name-list></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a> ][ <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-comma" id="ref-for-comb-comma">,</a><a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value②">&lt;string></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus">*</a>
 
@@ -1227,14 +1224,14 @@ until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-s
    <p>where:</p>
    <ul>
     <li data-md>
-     <p>the optional <a class="production css" data-link-type="type" href="#typedef-sheet-name-list" id="ref-for-typedef-sheet-name-list①">&lt;sheet-name-list></a> imports only the named sheet(s)
-with names matching <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet②">named stylesheet</a>s from the provided URL
+     <p>the optional <a class="production css" data-link-type="type" href="#typedef-sheet-name-list" id="ref-for-typedef-sheet-name-list①">&lt;sheet-name-list></a> imports only the stylesheet(s)
+with names matching <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet④">named stylesheet</a>s from the provided URL
 in the order they are listed.</p>
     <li data-md>
-     <p>the <a class="production css" data-link-type="type" href="#typedef-url-string" id="ref-for-typedef-url-string①">&lt;url-string></a> gives the URL of the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet①">stylesheet</a> to be imported.</p>
+     <p>the <a class="production css" data-link-type="type" href="#typedef-url-string" id="ref-for-typedef-url-string①">&lt;url-string></a> gives the URL of the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet">stylesheet</a> to be imported.</p>
     <li data-md>
      <p>the optional <span class="css">layer</span> keyword or <span class="css">layer()</span> function
-assigns the contents of the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet②">stylesheet</a> into its own anonymous <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-layers" id="ref-for-cascade-layers">cascade layer</a> or into the named <span id="ref-for-cascade-layers①">cascade layer</span>.</p>
+assigns the contents of the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet①">stylesheet</a> into its own anonymous <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-layers" id="ref-for-cascade-layers">cascade layer</a> or into the named <span id="ref-for-cascade-layers①">cascade layer</span>.</p>
      <p>The layer is added to the layer order
 even if the import fails to load the stylesheet,
 but is subject to any <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#import-conditions" id="ref-for-import-conditions">import conditions</a> (just as if declared by an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-5/#at-ruledef-layer" id="ref-for-at-ruledef-layer">@layer</a> rule wrapped
@@ -1257,20 +1254,20 @@ in the appropriate <a data-link-type="dfn" href="https://drafts.csswg.org/css-co
     <p>In this example, the <span class="css">h1</span> tag has the maroon color applied.</p>
    </div>
    <div class="example" id="example-43d88db1">
-    <a class="self-link" href="#example-43d88db1"></a> The following <a href="#conditional-import">conditional <span class="css">@import</span> rule</a> only loads the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet③">named stylesheet</a> with a name of "foo" from "narrow.css" when the UA <a href="https://www.w3.org/TR/css-conditional-3/#support-definition">supports</a> <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display">display: flex</a>,
-		and only applies the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet③">stylesheet</a> on a <a href="https://www.w3.org/TR/CSS2/media.html#media-types">handheld</a> device
+    <a class="self-link" href="#example-43d88db1"></a> The following <a href="#conditional-import">conditional <span class="css">@import</span> rule</a> only loads the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑤">named stylesheet</a> with a name of "foo" from "narrow.css" when the UA <a href="https://www.w3.org/TR/css-conditional-3/#support-definition">supports</a> <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display">display: flex</a>,
+		and only applies the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet②">stylesheet</a> on a <a href="https://www.w3.org/TR/CSS2/media.html#media-types">handheld</a> device
 		with a <a href="https://www.w3.org/TR/mediaqueries-4/#width">maximum viewport width</a> of 400px. 
 <pre>@import foo from url("narrow.css") supports(display: flex) handheld and (max-width: 400px);</pre>
    </div>
    <div class="example" id="example-d4e72059">
-    <a class="self-link" href="#example-d4e72059"></a> The following layer imports the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet④">named stylesheet</a>s named "foo" and "bar" from "tabs.css" into
+    <a class="self-link" href="#example-d4e72059"></a> The following layer imports the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑥">named stylesheet</a>s named "foo" and "bar" from "tabs.css" into
 		the <span class="css">framework.component</span> layer, and an un-named layer, respectively: 
 <pre>@import foo, bar from url("tabs.css") layer(framework.component);
 @import foo, bar from url("override.css") layer;
 </pre>
    </div>
-   <p>If a <url-string> is provided,
-	it must be interpreted as a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#url-value" id="ref-for-url-value①">&lt;url></a> with the same value.</url-string></p>
+   <p>If a <a class="production css" data-link-type="type" href="#typedef-url-string" id="ref-for-typedef-url-string②">&lt;url-string></a> is provided,
+	it must be interpreted as a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#url-value" id="ref-for-url-value①">&lt;url></a> with the same value.</p>
    <div class="example" id="example-da2e49cb">
     <a class="self-link" href="#example-da2e49cb"></a> The following lines are equivalent in meaning
 		and illustrate both <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-5/#at-ruledef-import" id="ref-for-at-ruledef-import①">@import</a> syntaxes
@@ -1280,16 +1277,16 @@ in the appropriate <a data-link-type="dfn" href="https://drafts.csswg.org/css-co
 </pre>
    </div>
    <h2 class="heading settled" data-level="3" id="sheet-apis"><span class="secno">3. </span><span class="content">Sheet APIs</span><a class="self-link" href="#sheet-apis"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="the-csssheetblockrule-interface"><span class="secno">3.1. </span><span class="content"> The <code>CSSSheetBlockRule</code> interface</span><a class="self-link" href="#the-csssheetblockrule-interface"></a></h3>
-   <p>The <code class="idl"><a data-link-type="idl" href="#csssheetblockrule" id="ref-for-csssheetblockrule">CSSSheetBlockRule</a></code> interface represents
+   <h3 class="heading settled" data-level="3.1" id="the-CSSSheetRule-interface"><span class="secno">3.1. </span><span class="content"> The <code>CSSSheetRule</code> interface</span><a class="self-link" href="#the-CSSSheetRule-interface"></a></h3>
+   <p>The <code class="idl"><a data-link-type="idl" href="#csssheetrule" id="ref-for-csssheetrule">CSSSheetRule</a></code> interface represents
 	the <span class="css">@sheet</span> <a href="#at-ruledef-sheet">block rule</a>:</p>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="csssheetblockrule"><code><c- g>CSSSheetBlockRule</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule" id="ref-for-cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssomstring" id="ref-for-cssomstring"><c- n>CSSOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSOMString" href="#dom-csssheetblockrule-name" id="ref-for-dom-csssheetblockrule-name"><c- g>name</c-></a>;
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="csssheetrule"><code><c- g>CSSSheetRule</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule" id="ref-for-cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssomstring" id="ref-for-cssomstring"><c- n>CSSOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSOMString" href="#dom-csssheetrule-name" id="ref-for-dom-csssheetrule-name"><c- g>name</c-></a>;
 };
 </pre>
-   <p>Its <dfn class="dfn-paneled idl-code" data-dfn-for="CSSSheetBlockRule" data-dfn-type="attribute" data-export id="dom-csssheetblockrule-name"><code>name</code></dfn> attribute represents
-	the <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name③">&lt;sheet-name></a> declared by the at-rule itself.</p>
+   <p>Its <dfn class="dfn-paneled idl-code" data-dfn-for="CSSSheetRule" data-dfn-type="attribute" data-export id="dom-csssheetrule-name"><code>name</code></dfn> attribute represents
+	the <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name③">&lt;sheet-name></a> declared by the <a href="#at-ruledef-sheet">@sheet block at-rule</a>.</p>
    <h3 class="heading settled" data-level="3.2" id="the-sheetnamelist-interface"><span class="secno">3.2. </span><span class="content">The <code>SheetNameList</code> Interface</span><a class="self-link" href="#the-sheetnamelist-interface"></a></h3>
    <p>An object that implements the <code class="idl"><a data-link-type="idl" href="#sheetnamelist" id="ref-for-sheetnamelist">SheetNameList</a></code> interface
 defines a list of stylesheet names.</p>
@@ -1307,21 +1304,21 @@ defines a list of stylesheet names.</p>
 };
 </pre>
    <p>Its <dfn class="dfn-paneled idl-code" data-dfn-for="CSSImportRule" data-dfn-type="attribute" data-export id="dom-cssimportrule-sheetnames"><code>sheetNames</code></dfn> attribute represents
-	a list of <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name④">&lt;sheet-name></a> definitions declared by the at-rule itself in the order
+	a list of <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name④">&lt;sheet-name></a> definitions declared by the <a href="#at-ruledef-sheet">@sheet block at-rule</a> in the order
 	they are listed.</p>
    <p>Its <dfn class="dfn-paneled idl-code" data-dfn-for="CSSImportRule" data-dfn-type="attribute" data-export id="dom-cssimportrule-namedstylesheets"><code>namedStyleSheets</code></dfn> attribute represents the list
-	of imported <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑤">named stylesheet</a>s in the order they are imported.</p>
+	of imported <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑦">named stylesheet</a>s in the order they are imported.</p>
    <h2 class="heading settled" data-level="4" id="changes"><span class="secno">4. </span><span class="content"> Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
    <h3 class="heading settled" data-level="4.1" id="additions-l6"><span class="secno">4.1. </span><span class="content"> Additions Since Level 6</span><a class="self-link" href="#additions-l6"></a></h3>
    <p>The following features have been added since <a href="https://www.w3.org/TR/css-cascade-6/">Level 6</a>:</p>
    <ul>
     <li data-md>
-     <p>The definition of a <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet④">stylesheet</a>.</p>
+     <p>The definition of a <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet③">stylesheet</a>.</p>
     <li data-md>
      <p>The <span class="css">@sheet</span> rule for subdividing stylesheets.</p>
     <li data-md>
-     <p>CSSOM definition for <code class="idl"><a data-link-type="idl" href="#csssheetblockrule" id="ref-for-csssheetblockrule①">CSSSheetBlockRule</a></code>.</p>
+     <p>CSSOM definition for <code class="idl"><a data-link-type="idl" href="#csssheetrule" id="ref-for-csssheetrule①">CSSSheetRule</a></code>.</p>
     <li data-md>
      <p>CSSOM definition for <code class="idl"><a data-link-type="idl" href="#sheetnamelist" id="ref-for-sheetnamelist②">SheetNameList</a></code>.</p>
     <li data-md>
@@ -1507,20 +1504,20 @@ potentially allowing sensitive data to be inferred from the computed styles they
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#csssheetblockrule">CSSSheetBlockRule</a><span>, in § 3.1</span>
-   <li><a href="#typedef-import-conditions">&lt;import-conditions></a><span>, in § 2.3</span>
+   <li><a href="#csssheetrule">CSSSheetRule</a><span>, in § 3.1</span>
+   <li><a href="#typedef-import-conditions">&lt;import-conditions></a><span>, in § 2.2</span>
    <li><a href="#dom-sheetnamelist-item">item(index)</a><span>, in § 3.2</span>
    <li><a href="#dom-sheetnamelist-length">length</a><span>, in § 3.2</span>
-   <li><a href="#dom-csssheetblockrule-name">name</a><span>, in § 3.1</span>
+   <li><a href="#dom-csssheetrule-name">name</a><span>, in § 3.1</span>
    <li><a href="#named-stylesheet">named stylesheet</a><span>, in § 2</span>
    <li><a href="#dom-cssimportrule-namedstylesheets">namedStyleSheets</a><span>, in § 3.3</span>
    <li><a href="#typedef-sheet-name">&lt;sheet-name></a><span>, in § 2</span>
    <li><a href="#sheet-name">sheet-name</a><span>, in § 2</span>
-   <li><a href="#typedef-sheet-name-list">&lt;sheet-name-list></a><span>, in § 2.3</span>
+   <li><a href="#typedef-sheet-name-list">&lt;sheet-name-list></a><span>, in § 2.2</span>
    <li><a href="#sheetnamelist">SheetNameList</a><span>, in § 3.2</span>
    <li><a href="#dom-cssimportrule-sheetnames">sheetNames</a><span>, in § 3.3</span>
    <li><a href="#stylesheet">stylesheet</a><span>, in § 2</span>
-   <li><a href="#typedef-url-string">&lt;url-string></a><span>, in § 2.3</span>
+   <li><a href="#typedef-url-string">&lt;url-string></a><span>, in § 2.2</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
@@ -1656,8 +1653,8 @@ potentially allowing sensitive data to be inferred from the computed styles they
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <a href="#csssheetblockrule"><code><c- g>CSSSheetBlockRule</c-></code></a> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssomstring"><c- n>CSSOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSOMString" href="#dom-csssheetblockrule-name"><c- g>name</c-></a>;
+<c- b>interface</c-> <a href="#csssheetrule"><code><c- g>CSSSheetRule</c-></code></a> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-1/#cssomstring"><c- n>CSSOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSOMString" href="#dom-csssheetrule-name"><c- g>name</c-></a>;
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
@@ -1959,59 +1956,59 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"0197874e": {"dfnID":"0197874e","dfnText":"block at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-block-at-rule"},{"id":"ref-for-block-at-rule\u2460"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#block-at-rule"},
-"02eb2842": {"dfnID":"02eb2842","dfnText":"<layer-name>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-layer-name"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-cascade-5/#typedef-layer-name"},
-"12432dcb": {"dfnID":"12432dcb","dfnText":"<supports-condition>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-supports-condition"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
+"0197874e": {"dfnID":"0197874e","dfnText":"block at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-block-at-rule"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#block-at-rule"},
+"02eb2842": {"dfnID":"02eb2842","dfnText":"<layer-name>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-layer-name"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-cascade-5/#typedef-layer-name"},
+"12432dcb": {"dfnID":"12432dcb","dfnText":"<supports-condition>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-supports-condition"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
 "21bfe474": {"dfnID":"21bfe474","dfnText":"StyleSheetList","external":true,"refSections":[{"refs":[{"id":"ref-for-stylesheetlist"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"https://drafts.csswg.org/cssom-1/#stylesheetlist"},
-"2485e0d1": {"dfnID":"2485e0d1","dfnText":"CSSGroupingRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssgroupingrule"}],"title":"3.1. \nThe CSSSheetBlockRule interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssgroupingrule"},
+"2485e0d1": {"dfnID":"2485e0d1","dfnText":"CSSGroupingRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssgroupingrule"}],"title":"3.1. \nThe CSSSheetRule interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssgroupingrule"},
 "2b1bb297": {"dfnID":"2b1bb297","dfnText":"<scope-start>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-start"}],"title":"4.2. \nAdditions Since Level 5"}],"url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-start"},
 "2b2f31db": {"dfnID":"2b2f31db","dfnText":"CSSImportRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssimportrule"},{"id":"ref-for-cssimportrule\u2460"}],"title":"3.3. \nExtensions to the CSSImportRule interface"},{"refs":[{"id":"ref-for-cssimportrule\u2461"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"https://drafts.csswg.org/cssom-1/#cssimportrule"},
-"2bd7646e": {"dfnID":"2bd7646e","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#comb-one"},
+"2bd7646e": {"dfnID":"2bd7646e","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#comb-one"},
 "3024450a": {"dfnID":"3024450a","dfnText":"<scope-end>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-end"}],"title":"4.2. \nAdditions Since Level 5"}],"url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-end"},
-"4a88f201": {"dfnID":"4a88f201","dfnText":"cascade layers","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-layers"},{"id":"ref-for-cascade-layers\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-cascade-layers\u2461"}],"title":"4.3. \nAdditions Since Level 4"}],"url":"https://drafts.csswg.org/css-cascade-5/#cascade-layers"},
-"4c891868": {"dfnID":"4c891868","dfnText":"<media-query-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-media-query-list"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list"},
+"4a88f201": {"dfnID":"4a88f201","dfnText":"cascade layers","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-layers"},{"id":"ref-for-cascade-layers\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-cascade-layers\u2461"}],"title":"4.3. \nAdditions Since Level 4"}],"url":"https://drafts.csswg.org/css-cascade-5/#cascade-layers"},
+"4c891868": {"dfnID":"4c891868","dfnText":"<media-query-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-media-query-list"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list"},
 "4d7d3dcd": {"dfnID":"4d7d3dcd","dfnText":"initial","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-initial"}],"title":"4.5. \nAdditions Since Level 2"}],"url":"https://drafts.csswg.org/css-cascade-5/#valdef-all-initial"},
-"4e55d7fb": {"dfnID":"4e55d7fb","dfnText":"@import","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"}],"title":"2. \nStylesheet"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461"}],"title":"4.3. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462"}],"title":"4.4. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"}],"title":"6. \nSecurity Considerations"}],"url":"https://drafts.csswg.org/css-cascade-5/#at-ruledef-import"},
-"5fced98b": {"dfnID":"5fced98b","dfnText":"CSSOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-cssomstring"}],"title":"3.1. \nThe CSSSheetBlockRule interface"},{"refs":[{"id":"ref-for-cssomstring\u2460"}],"title":"3.2. The SheetNameList Interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssomstring"},
+"4e55d7fb": {"dfnID":"4e55d7fb","dfnText":"@import","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"}],"title":"2. \nStylesheet"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461"}],"title":"4.3. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462"}],"title":"4.4. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"}],"title":"6. \nSecurity Considerations"}],"url":"https://drafts.csswg.org/css-cascade-5/#at-ruledef-import"},
+"5fced98b": {"dfnID":"5fced98b","dfnText":"CSSOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-cssomstring"}],"title":"3.1. \nThe CSSSheetRule interface"},{"refs":[{"id":"ref-for-cssomstring\u2460"}],"title":"3.2. The SheetNameList Interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssomstring"},
 "65c9f2cf": {"dfnID":"65c9f2cf","dfnText":"<rule-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-rule-list"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-rule-list"},
-"68150e76": {"dfnID":"68150e76","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
-"6a56abc9": {"dfnID":"6a56abc9","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#funcdef-url"},
-"746e3d95": {"dfnID":"746e3d95","dfnText":"import conditions","external":true,"refSections":[{"refs":[{"id":"ref-for-import-conditions"},{"id":"ref-for-import-conditions\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-cascade-5/#import-conditions"},
+"68150e76": {"dfnID":"68150e76","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
+"6a56abc9": {"dfnID":"6a56abc9","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#funcdef-url"},
+"746e3d95": {"dfnID":"746e3d95","dfnText":"import conditions","external":true,"refSections":[{"refs":[{"id":"ref-for-import-conditions"},{"id":"ref-for-import-conditions\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-cascade-5/#import-conditions"},
 "7d46bee6": {"dfnID":"7d46bee6","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"},{"id":"ref-for-typedef-ident\u2460"}],"title":"2. \nStylesheet"}],"url":"https://drafts.csswg.org/css-values-3/#typedef-ident"},
 "84b13f54": {"dfnID":"84b13f54","dfnText":"@scope","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-scope"}],"title":"4.2. \nAdditions Since Level 5"}],"url":"https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope"},
-"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"3.1. \nThe CSSSheetBlockRule interface"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"3.2. The SheetNameList Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
-"8c1eb8d0": {"dfnID":"8c1eb8d0","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"},{"id":"ref-for-mult-opt\u2462"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#mult-opt"},
+"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"3.1. \nThe CSSSheetRule interface"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"3.2. The SheetNameList Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
+"8c1eb8d0": {"dfnID":"8c1eb8d0","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"},{"id":"ref-for-mult-opt\u2462"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#mult-opt"},
 "8e92a2a0": {"dfnID":"8e92a2a0","dfnText":"revert-layer","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert-layer"}],"title":"4.3. \nAdditions Since Level 4"}],"url":"https://drafts.csswg.org/css-cascade-5/#valdef-all-revert-layer"},
-"94b8f87c": {"dfnID":"94b8f87c","dfnText":"@layer","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-layer"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2460"}],"title":"4.3. \nAdditions Since Level 4"}],"url":"https://drafts.csswg.org/css-cascade-5/#at-ruledef-layer"},
-"977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
+"94b8f87c": {"dfnID":"94b8f87c","dfnText":"@layer","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-layer"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2460"}],"title":"4.3. \nAdditions Since Level 4"}],"url":"https://drafts.csswg.org/css-cascade-5/#at-ruledef-layer"},
+"977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
 "9e004c39": {"dfnID":"9e004c39","dfnText":"unset","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-unset"}],"title":"4.5. \nAdditions Since Level 2"}],"url":"https://drafts.csswg.org/css-cascade-5/#valdef-all-unset"},
 "a15951ea": {"dfnID":"a15951ea","dfnText":"supports()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-supports"}],"title":"4.4. \nAdditions Since Level 3"}],"url":"https://drafts.csswg.org/css-conditional-5/#funcdef-supports"},
 "a2a30ba8": {"dfnID":"a2a30ba8","dfnText":"CORS protocol","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-protocol"}],"title":"6. \nSecurity Considerations"}],"url":"https://fetch.spec.whatwg.org/#cors-protocol"},
 "a5c91173": {"dfnID":"a5c91173","dfnText":"SameObject","external":true,"refSections":[{"refs":[{"id":"ref-for-SameObject"},{"id":"ref-for-SameObject\u2460"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"https://webidl.spec.whatwg.org/#SameObject"},
 "bef88b2d": {"dfnID":"bef88b2d","dfnText":"revert","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert"}],"title":"4.4. \nAdditions Since Level 3"}],"url":"https://drafts.csswg.org/css-cascade-5/#valdef-all-revert"},
-"bf3ca8a7": {"dfnID":"bf3ca8a7","dfnText":"conditional group rule","external":true,"refSections":[{"refs":[{"id":"ref-for-conditional-group-rule"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-conditional-group-rule\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-conditional-3/#conditional-group-rule"},
-"csssheetblockrule": {"dfnID":"csssheetblockrule","dfnText":"CSSSheetBlockRule","external":false,"refSections":[{"refs":[{"id":"ref-for-csssheetblockrule"}],"title":"3.1. \nThe CSSSheetBlockRule interface"},{"refs":[{"id":"ref-for-csssheetblockrule\u2460"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"#csssheetblockrule"},
+"bf3ca8a7": {"dfnID":"bf3ca8a7","dfnText":"conditional group rule","external":true,"refSections":[{"refs":[{"id":"ref-for-conditional-group-rule"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-conditional-group-rule\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-conditional-3/#conditional-group-rule"},
+"csssheetrule": {"dfnID":"csssheetrule","dfnText":"CSSSheetRule","external":false,"refSections":[{"refs":[{"id":"ref-for-csssheetrule"}],"title":"3.1. \nThe CSSSheetRule interface"},{"refs":[{"id":"ref-for-csssheetrule\u2460"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"#csssheetrule"},
 "d95397a7": {"dfnID":"d95397a7","dfnText":"all","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-all"}],"title":"4.5. \nAdditions Since Level 2"}],"url":"https://drafts.csswg.org/css-cascade-5/#propdef-all"},
 "de6d76c2": {"dfnID":"de6d76c2","dfnText":"cascade","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade"},{"id":"ref-for-cascade\u2460"}],"title":"4.3. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-cascade\u2461"}],"title":"4.4. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-cascade\u2462"}],"title":"4.5. \nAdditions Since Level 2"}],"url":"https://drafts.csswg.org/css-cascade-6/#cascade"},
 "dom-cssimportrule-namedstylesheets": {"dfnID":"dom-cssimportrule-namedstylesheets","dfnText":"namedStyleSheets","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-cssimportrule-namedstylesheets"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#dom-cssimportrule-namedstylesheets"},
 "dom-cssimportrule-sheetnames": {"dfnID":"dom-cssimportrule-sheetnames","dfnText":"sheetNames","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-cssimportrule-sheetnames"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#dom-cssimportrule-sheetnames"},
-"dom-csssheetblockrule-name": {"dfnID":"dom-csssheetblockrule-name","dfnText":"name","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-csssheetblockrule-name"}],"title":"3.1. \nThe CSSSheetBlockRule interface"}],"url":"#dom-csssheetblockrule-name"},
+"dom-csssheetrule-name": {"dfnID":"dom-csssheetrule-name","dfnText":"name","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-csssheetrule-name"}],"title":"3.1. \nThe CSSSheetRule interface"}],"url":"#dom-csssheetrule-name"},
 "dom-sheetnamelist-item": {"dfnID":"dom-sheetnamelist-item","dfnText":"item","external":false,"refSections":[],"url":"#dom-sheetnamelist-item"},
 "dom-sheetnamelist-item-index-index": {"dfnID":"dom-sheetnamelist-item-index-index","dfnText":"index","external":false,"refSections":[],"url":"#dom-sheetnamelist-item-index-index"},
 "dom-sheetnamelist-length": {"dfnID":"dom-sheetnamelist-length","dfnText":"length","external":false,"refSections":[],"url":"#dom-sheetnamelist-length"},
 "e054c772": {"dfnID":"e054c772","dfnText":"scope","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-scope"}],"title":"4.2. \nAdditions Since Level 5"}],"url":"https://w3c.github.io/manifest/#dfn-scope"},
-"e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
+"e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "e97a9688": {"dfnID":"e97a9688","dfnText":"unsigned long","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-unsigned-long"},{"id":"ref-for-idl-unsigned-long\u2460"}],"title":"3.2. The SheetNameList Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-unsigned-long"},
-"fa293cdd": {"dfnID":"fa293cdd","dfnText":"<url>","external":true,"refSections":[{"refs":[{"id":"ref-for-url-value"},{"id":"ref-for-url-value\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#url-value"},
-"fd49fda2": {"dfnID":"fd49fda2","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#comb-comma"},
-"named-stylesheet": {"dfnID":"named-stylesheet","dfnText":"named stylesheet","external":false,"refSections":[{"refs":[{"id":"ref-for-named-stylesheet"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-named-stylesheet\u2460"}],"title":"2.2. \nDeclaring Named Stylesheets"},{"refs":[{"id":"ref-for-named-stylesheet\u2461"},{"id":"ref-for-named-stylesheet\u2462"},{"id":"ref-for-named-stylesheet\u2463"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-named-stylesheet\u2464"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#named-stylesheet"},
+"fa293cdd": {"dfnID":"fa293cdd","dfnText":"<url>","external":true,"refSections":[{"refs":[{"id":"ref-for-url-value"},{"id":"ref-for-url-value\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-4/#url-value"},
+"fd49fda2": {"dfnID":"fd49fda2","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"https://drafts.csswg.org/css-values-3/#comb-comma"},
+"named-stylesheet": {"dfnID":"named-stylesheet","dfnText":"named stylesheet","external":false,"refSections":[{"refs":[{"id":"ref-for-named-stylesheet"},{"id":"ref-for-named-stylesheet\u2460"}],"title":"2. \nStylesheet"},{"refs":[{"id":"ref-for-named-stylesheet\u2461"},{"id":"ref-for-named-stylesheet\u2462"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-named-stylesheet\u2463"},{"id":"ref-for-named-stylesheet\u2464"},{"id":"ref-for-named-stylesheet\u2465"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-named-stylesheet\u2466"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#named-stylesheet"},
 "sheet-name": {"dfnID":"sheet-name","dfnText":"sheet-name","external":false,"refSections":[{"refs":[{"id":"ref-for-sheet-name"}],"title":"2. \nStylesheet"}],"url":"#sheet-name"},
 "sheetnamelist": {"dfnID":"sheetnamelist","dfnText":"SheetNameList","external":false,"refSections":[{"refs":[{"id":"ref-for-sheetnamelist"}],"title":"3.2. The SheetNameList Interface"},{"refs":[{"id":"ref-for-sheetnamelist\u2460"}],"title":"3.3. \nExtensions to the CSSImportRule interface"},{"refs":[{"id":"ref-for-sheetnamelist\u2461"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"#sheetnamelist"},
-"stylesheet": {"dfnID":"stylesheet","dfnText":"stylesheet","external":false,"refSections":[{"refs":[{"id":"ref-for-stylesheet"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-stylesheet\u2460"},{"id":"ref-for-stylesheet\u2461"},{"id":"ref-for-stylesheet\u2462"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-stylesheet\u2463"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"#stylesheet"},
-"typedef-import-conditions": {"dfnID":"typedef-import-conditions","dfnText":"<import-conditions>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-import-conditions"},{"id":"ref-for-typedef-import-conditions\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-import-conditions"},
-"typedef-sheet-name": {"dfnID":"typedef-sheet-name","dfnText":"<sheet-name>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-sheet-name"},{"id":"ref-for-typedef-sheet-name\u2460"}],"title":"2. \nStylesheet"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2461"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2462"}],"title":"3.1. \nThe CSSSheetBlockRule interface"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2463"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#typedef-sheet-name"},
-"typedef-sheet-name-list": {"dfnID":"typedef-sheet-name-list","dfnText":"<sheet-name-list>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-sheet-name-list"},{"id":"ref-for-typedef-sheet-name-list\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-sheet-name-list"},
-"typedef-url-string": {"dfnID":"typedef-url-string","dfnText":"<url-string>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-url-string"},{"id":"ref-for-typedef-url-string\u2460"}],"title":"2.3. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-url-string"},
+"stylesheet": {"dfnID":"stylesheet","dfnText":"stylesheet","external":false,"refSections":[{"refs":[{"id":"ref-for-stylesheet"},{"id":"ref-for-stylesheet\u2460"},{"id":"ref-for-stylesheet\u2461"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"},{"refs":[{"id":"ref-for-stylesheet\u2462"}],"title":"4.1. \nAdditions Since Level 6"}],"url":"#stylesheet"},
+"typedef-import-conditions": {"dfnID":"typedef-import-conditions","dfnText":"<import-conditions>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-import-conditions"},{"id":"ref-for-typedef-import-conditions\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-import-conditions"},
+"typedef-sheet-name": {"dfnID":"typedef-sheet-name","dfnText":"<sheet-name>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-sheet-name"},{"id":"ref-for-typedef-sheet-name\u2460"}],"title":"2. \nStylesheet"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2461"}],"title":"2.1. \nNamed Stylesheets: the `@sheet` block at-rule"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2462"}],"title":"3.1. \nThe CSSSheetRule interface"},{"refs":[{"id":"ref-for-typedef-sheet-name\u2463"}],"title":"3.3. \nExtensions to the CSSImportRule interface"}],"url":"#typedef-sheet-name"},
+"typedef-sheet-name-list": {"dfnID":"typedef-sheet-name-list","dfnText":"<sheet-name-list>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-sheet-name-list"},{"id":"ref-for-typedef-sheet-name-list\u2460"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-sheet-name-list"},
+"typedef-url-string": {"dfnID":"typedef-url-string","dfnText":"<url-string>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-url-string"},{"id":"ref-for-typedef-url-string\u2460"},{"id":"ref-for-typedef-url-string\u2461"}],"title":"2.2. \nImporting Specific Named Stylesheets: the from Keyword"}],"url":"#typedef-url-string"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -2457,10 +2454,10 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
-"#csssheetblockrule": {"displayText":"CSSSheetBlockRule","export":true,"for_":[],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"CSSSheetBlockRule","type":"interface","url":"#csssheetblockrule"},
+"#csssheetrule": {"displayText":"CSSSheetRule","export":true,"for_":[],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"CSSSheetRule","type":"interface","url":"#csssheetrule"},
 "#dom-cssimportrule-namedstylesheets": {"displayText":"namedStyleSheets","export":true,"for_":["CSSImportRule"],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"namedStyleSheets","type":"attribute","url":"#dom-cssimportrule-namedstylesheets"},
 "#dom-cssimportrule-sheetnames": {"displayText":"sheetNames","export":true,"for_":["CSSImportRule"],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"sheetNames","type":"attribute","url":"#dom-cssimportrule-sheetnames"},
-"#dom-csssheetblockrule-name": {"displayText":"name","export":true,"for_":["CSSSheetBlockRule"],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"name","type":"attribute","url":"#dom-csssheetblockrule-name"},
+"#dom-csssheetrule-name": {"displayText":"name","export":true,"for_":["CSSSheetRule"],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"name","type":"attribute","url":"#dom-csssheetrule-name"},
 "#named-stylesheet": {"displayText":"named stylesheet","export":true,"for_":[],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"named stylesheet","type":"dfn","url":"#named-stylesheet"},
 "#sheet-name": {"displayText":"sheet-name","export":true,"for_":[],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"sheet-name","type":"dfn","url":"#sheet-name"},
 "#sheetnamelist": {"displayText":"SheetNameList","export":true,"for_":[],"level":"7","normative":true,"shortname":"css-cascade","spec":"css-cascade-7","status":"local","text":"SheetNameList","type":"interface","url":"#sheetnamelist"},
