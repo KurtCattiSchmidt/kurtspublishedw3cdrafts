@@ -1057,7 +1057,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Cascading and Inheritance Level 7</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-03-27">27 March 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-07-08">8 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1179,7 +1179,7 @@ on screen, on paper, etc.
     <li>Any of the above may be subdivided into a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="named-stylesheet">named stylesheet</dfn> with the <span class="css">@sheet</span> rule. 
    </ol>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="sheet-name">sheet-name</dfn> is a string identifying
-	 inner <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet">named stylesheet</a>s within a stylesheet.</p>
+	 inner <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet">named stylesheets</a> within a stylesheet.</p>
    <p>Syntactically, a <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet①">named stylesheet</a> must include an explicit <a data-link-type="dfn" href="#sheet-name" id="ref-for-sheet-name">sheet-name</a>, and is represented
 	by the <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name">&lt;sheet-name></a> in <span class="css">@sheet</span> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-5/#at-ruledef-import" id="ref-for-at-ruledef-import">@import</a> rules,
 	which is a single <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-3/#typedef-ident" id="ref-for-typedef-ident">&lt;ident></a> token:</p>
@@ -1197,9 +1197,9 @@ on screen, on paper, etc.
    <p>Such <span class="css">@sheet</span> block rules have the same restrictions and processing
 	as a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#conditional-group-rule" id="ref-for-conditional-group-rule">conditional group rule</a> <a data-link-type="biblio" href="#biblio-css-conditional-3" title="CSS Conditional Rules Module Level 3">[CSS-CONDITIONAL-3]</a> with a false condition.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This means that rules within an <span class="css">@sheet</span> block are not applied
-until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet③">named stylesheet</a> is explicitly imported into another context.</p>
-   <div class="example" id="example-560a110a">
-    <a class="self-link" href="#example-560a110a"></a> 
+until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet③">named stylesheet</a> is explicitly imported.</p>
+   <div class="example" id="example-77f85c8a">
+    <a class="self-link" href="#example-77f85c8a"></a> 
 <pre class="lang-css highlight">&lt;style>
 <c- n>@sheet</c-> framework <c- p>{</c->
   h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> maroon<c- p>;</c-> <c- p>}</c->
@@ -1207,9 +1207,9 @@ until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-s
 &lt;/style>
 &lt;h1>Sample text&lt;/h1>
 </pre>
-    <p>In this example, the <span class="css">h1</span> tag does not have the maroon color applied, as the <span class="css">@sheet</span> named "framework" was not explicitly imported into another context.</p>
+    <p>In this example, the <span class="css">h1</span> tag does not have the maroon color applied, as the <span class="css">@sheet</span> named "framework" was not explicitly imported.</p>
    </div>
-   <p><span class="css">@sheet</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rules</a> may not be nested within any other CSS rules.</p>
+   <p><span class="css">@sheet</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rules</a> may not be nested within any other CSS rules (besides nested <span class="css">@sheet</span> blocks).</p>
    <h3 class="heading settled" data-level="2.2" id="at-ruledef-import-from"><span class="secno">2.2. </span><span class="content"> Importing Specific Named Stylesheets: the <span class="css">from</span> Keyword</span><a class="self-link" href="#at-ruledef-import-from"></a></h3>
 <pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-url-string">&lt;url-string></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#url-value" id="ref-for-url-value">&lt;url></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-one" id="ref-for-comb-one">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a> ]
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-sheet-name-list">&lt;sheet-name-list></dfn> = [ <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a> ][ <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-3/#comb-comma" id="ref-for-comb-comma">,</a><a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value②">&lt;string></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus">*</a>
@@ -1225,7 +1225,7 @@ until their <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-s
    <ul>
     <li data-md>
      <p>the optional <a class="production css" data-link-type="type" href="#typedef-sheet-name-list" id="ref-for-typedef-sheet-name-list①">&lt;sheet-name-list></a> imports only the stylesheet(s)
-with names matching <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet④">named stylesheet</a>s from the provided URL
+with names matching <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet④">named stylesheets</a> from the provided URL
 in the order they are listed.</p>
     <li data-md>
      <p>the <a class="production css" data-link-type="type" href="#typedef-url-string" id="ref-for-typedef-url-string①">&lt;url-string></a> gives the URL of the <a data-link-type="dfn" href="#stylesheet" id="ref-for-stylesheet">stylesheet</a> to be imported.</p>
@@ -1260,7 +1260,7 @@ in the appropriate <a data-link-type="dfn" href="https://drafts.csswg.org/css-co
 <pre>@import foo from url("narrow.css") supports(display: flex) handheld and (max-width: 400px);</pre>
    </div>
    <div class="example" id="example-d4e72059">
-    <a class="self-link" href="#example-d4e72059"></a> The following layer imports the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑥">named stylesheet</a>s named "foo" and "bar" from "tabs.css" into
+    <a class="self-link" href="#example-d4e72059"></a> The following layer imports the <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑥">named stylesheets</a> named "foo" and "bar" from "tabs.css" into
 		the <span class="css">framework.component</span> layer, and an un-named layer, respectively: 
 <pre>@import foo, bar from url("tabs.css") layer(framework.component);
 @import foo, bar from url("override.css") layer;
@@ -1307,7 +1307,7 @@ defines a list of stylesheet names.</p>
 	a list of <a class="production css" data-link-type="type" href="#typedef-sheet-name" id="ref-for-typedef-sheet-name④">&lt;sheet-name></a> definitions declared by the <a href="#at-ruledef-sheet">@sheet block at-rule</a> in the order
 	they are listed.</p>
    <p>Its <dfn class="dfn-paneled idl-code" data-dfn-for="CSSImportRule" data-dfn-type="attribute" data-export id="dom-cssimportrule-namedstylesheets"><code>namedStyleSheets</code></dfn> attribute represents the list
-	of imported <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑦">named stylesheet</a>s in the order they are imported.</p>
+	of imported <a data-link-type="dfn" href="#named-stylesheet" id="ref-for-named-stylesheet⑦">named stylesheets</a> in the order they are imported.</p>
    <h2 class="heading settled" data-level="4" id="changes"><span class="secno">4. </span><span class="content"> Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
    <h3 class="heading settled" data-level="4.1" id="additions-l6"><span class="secno">4.1. </span><span class="content"> Additions Since Level 6</span><a class="self-link" href="#additions-l6"></a></h3>
